@@ -9,15 +9,14 @@ import { useState } from "react";
 export default function AccountPage() {
     const [isSellerActivated, setIsSellerActivated] = useState(false);
 
-const handleActivateSellerAccount = async () => {
+    const handleActivateSellerAccount = async () => {
     try {
         const response = await fetch("/api/stripe/connect/onboard", {
             method: "POST",
         });
 
-        // Vérifie si la réponse est OK (code 200-299)
         if (!response.ok) {
-            const errorData = await response.json(); // Récupère l'erreur sous forme de JSON
+            const errorData = await response.json();
             throw new Error(errorData.error || "Une erreur est survenue");
         }
 
@@ -28,9 +27,15 @@ const handleActivateSellerAccount = async () => {
         } else {
             alert("Une erreur est survenue lors de l'activation du compte vendeur.");
         }
-    } catch (error) {
+    } catch (error: unknown) { // Déclare explicitement le type de l'erreur comme 'unknown'
         console.error("Erreur lors de l'activation du compte vendeur : ", error);
-        alert(`Erreur lors de l'activation du compte vendeur : ${error.message}`);
+
+        // Vérifie que 'error' est bien une instance de Error
+        if (error instanceof Error) {
+            alert(`Erreur lors de l'activation du compte vendeur : ${error.message}`);
+        } else {
+            alert("Erreur lors de l'activation du compte vendeur : Un problème est survenu.");
+        }
     }
 };
 
