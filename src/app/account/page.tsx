@@ -9,24 +9,31 @@ import { useState } from "react";
 export default function AccountPage() {
     const [isSellerActivated, setIsSellerActivated] = useState(false);
 
-    const handleActivateSellerAccount = async () => {
-        try {
-            const response = await fetch("/api/stripe/connect/onboard", {
-                method: "POST",
-            });
+const handleActivateSellerAccount = async () => {
+    try {
+        const response = await fetch("/api/stripe/connect/onboard", {
+            method: "POST",
+        });
 
-            const data = await response.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                alert("Une erreur est survenue lors de l'activation du compte vendeur.");
-            }
-        } catch (error) {
-            console.error("Erreur lors de l'activation du compte vendeur : ", error);
-            alert("Erreur lors de l'activation du compte vendeur.");
+        // Vérifie si la réponse est OK (code 200-299)
+        if (!response.ok) {
+            const errorData = await response.json(); // Récupère l'erreur sous forme de JSON
+            throw new Error(errorData.error || "Une erreur est survenue");
         }
-    };
+
+        const data = await response.json();
+
+        if (data.url) {
+            window.location.href = data.url; // Redirige l'utilisateur vers la page d'onboarding Stripe
+        } else {
+            alert("Une erreur est survenue lors de l'activation du compte vendeur.");
+        }
+    } catch (error) {
+        console.error("Erreur lors de l'activation du compte vendeur : ", error);
+        alert(`Erreur lors de l'activation du compte vendeur : ${error.message}`);
+    }
+};
+
 
     return (
         <div className="space-y-3">
