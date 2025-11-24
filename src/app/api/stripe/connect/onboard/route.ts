@@ -16,11 +16,10 @@ export async function POST(req: NextRequest) {
       country: "FR", // ou le pays de l'utilisateur
       business_type: "individual", // pour un compte vendeur personnel
       individual: {
-        // Ici tu ajoutes des informations personnelles nécessaires pour un individu
-        first_name: "John", // Prénom
-        last_name: "Doe",  // Nom
-        email: "email@example.com", // Email
-        dob: { day: 1, month: 1, year: 1990 }, // Date de naissance
+        first_name: "John", // Exemple
+        last_name: "Doe",  // Exemple
+        email: "email@example.com", // Exemple
+        dob: { day: 1, month: 1, year: 1990 }, // Exemple
         address: {
           line1: "123 Rue de Paris", // Adresse
           postal_code: "75000", // Code postal
@@ -42,6 +41,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ url: accountLink.url });
   } catch (error) {
     console.error("Erreur lors de la création du compte vendeur :", error);
-    return new NextResponse("Erreur lors de l'activation du compte vendeur", { status: 500 });
+
+    // Renvoie une erreur sous forme de JSON valide
+    return NextResponse.json(
+      { error: "Erreur lors de l'activation du compte vendeur", details: error.message },
+      { status: 500 }
+    );
   }
 }
