@@ -6,10 +6,7 @@ import { AccountHeader } from "@/components/account/account-header";
 import { AccountSidebar } from "@/components/account/account-sidebar";
 import { useState } from "react";
 
-export default function AccountPage() {
-    const [isSellerActivated, setIsSellerActivated] = useState(false);
-
-    const handleActivateSellerAccount = async () => {
+const handleActivateSellerAccount = async () => {
     try {
         const response = await fetch("/api/stripe/connect/onboard", {
             method: "POST",
@@ -27,7 +24,7 @@ export default function AccountPage() {
         } else {
             alert("Une erreur est survenue lors de l'activation du compte vendeur.");
         }
-    } catch (error: unknown) { // Déclare explicitement le type de l'erreur comme 'unknown'
+    } catch (error: unknown) {
         console.error("Erreur lors de l'activation du compte vendeur : ", error);
 
         // Vérifie que 'error' est bien une instance de Error
