@@ -15,6 +15,19 @@ export async function POST(req: NextRequest) {
       type: "express",
       country: "FR", // ou le pays de l'utilisateur
       business_type: "individual", // pour un compte vendeur personnel
+      individual: {
+        // Ici tu ajoutes des informations personnelles nécessaires pour un individu
+        first_name: "John", // Prénom
+        last_name: "Doe",  // Nom
+        email: "email@example.com", // Email
+        dob: { day: 1, month: 1, year: 1990 }, // Date de naissance
+        address: {
+          line1: "123 Rue de Paris", // Adresse
+          postal_code: "75000", // Code postal
+          city: "Paris", // Ville
+          country: "FR", // Pays
+        },
+      },
     });
 
     // Créer un lien d'onboarding Stripe
