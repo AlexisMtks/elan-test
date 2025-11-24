@@ -38,18 +38,22 @@ export async function POST(req: NextRequest) {
 
     // Retourner l'URL pour l'onboarding
     return NextResponse.json({ url: accountLink.url });
-  } catch (error: unknown) { // Déclare explicitement le type de l'erreur comme 'unknown'
+  } catch (error: unknown) {
     console.error("Erreur lors de la création du compte vendeur :", error);
 
-    // Vérifie que 'error' est bien une instance de Error
+    // Vérifier si l'erreur est une instance de Error
     if (error instanceof Error) {
-      // Renvoie une erreur sous forme de JSON valide
+      // Log l'erreur complète dans la console pour déboguer
+      console.error("Détails de l'erreur :", error.message);
+
+      // Renvoie une erreur sous forme de JSON valide avec les détails
       return NextResponse.json(
         { error: "Erreur lors de l'activation du compte vendeur", details: error.message },
         { status: 500 }
       );
     } else {
-      // Si l'erreur n'est pas une instance de Error, renvoie un message générique
+      console.error("Erreur inconnue lors de l'activation du compte vendeur");
+      
       return NextResponse.json(
         { error: "Erreur inconnue lors de l'activation du compte vendeur" },
         { status: 500 }
