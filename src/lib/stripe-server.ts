@@ -6,5 +6,5 @@ if (!process.env.STRIPE_SECRET_KEY) {
 }
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2024-06-20", // ou la dernière version dispo dans ton dashboard
+  apiVersion: "2020-08-27", // ou la dernière version dispo dans ton dashboard
 });
