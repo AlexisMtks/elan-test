@@ -1,4 +1,3 @@
-// src/app/api/stripe/connect/onboard/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe-server"; // Assure-toi que cette importation pointe vers ta config Stripe
 
@@ -39,13 +38,22 @@ export async function POST(req: NextRequest) {
 
     // Retourner l'URL pour l'onboarding
     return NextResponse.json({ url: accountLink.url });
-  } catch (error) {
+  } catch (error: unknown) { // Déclare explicitement le type de l'erreur comme 'unknown'
     console.error("Erreur lors de la création du compte vendeur :", error);
 
-    // Renvoie une erreur sous forme de JSON valide
-    return NextResponse.json(
-      { error: "Erreur lors de l'activation du compte vendeur", details: error.message },
-      { status: 500 }
-    );
+    // Vérifie que 'error' est bien une instance de Error
+    if (error instanceof Error) {
+      // Renvoie une erreur sous forme de JSON valide
+      return NextResponse.json(
+        { error: "Erreur lors de l'activation du compte vendeur", details: error.message },
+        { status: 500 }
+      );
+    } else {
+      // Si l'erreur n'est pas une instance de Error, renvoie un message générique
+      return NextResponse.json(
+        { error: "Erreur inconnue lors de l'activation du compte vendeur" },
+        { status: 500 }
+      );
+    }
   }
 }
