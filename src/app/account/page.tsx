@@ -1,4 +1,6 @@
 // src/app/account/page.tsx
+"use client"; // Ajoute cette ligne au tout début du fichier
+
 import { AccountPageClient } from "@/components/account/account-page-client";
 import { AccountHeader } from "@/components/account/account-header";
 import { AccountSidebar } from "@/components/account/account-sidebar";
@@ -7,9 +9,7 @@ import { useState } from "react";
 export default function AccountPage() {
     const [isSellerActivated, setIsSellerActivated] = useState(false);
 
-    // Logique pour activer le compte vendeur
     const handleActivateSellerAccount = async () => {
-        // Ici, tu vas appeler ton API backend qui va créer le compte Stripe Express et renvoyer l'URL d'onboarding
         try {
             const response = await fetch("/api/stripe/connect/onboard", {
                 method: "POST",
@@ -18,7 +18,7 @@ export default function AccountPage() {
             const data = await response.json();
 
             if (data.url) {
-                window.location.href = data.url; // Redirige l'utilisateur vers la page d'onboarding Stripe
+                window.location.href = data.url;
             } else {
                 alert("Une erreur est survenue lors de l'activation du compte vendeur.");
             }
@@ -45,12 +45,10 @@ export default function AccountPage() {
                 </div>
             )}
 
-            {/* Si l'utilisateur a déjà un compte vendeur */}
             {isSellerActivated && (
                 <p className="text-green-500">Votre compte vendeur est activé !</p>
             )}
 
-            {/* Sidebar des informations du compte */}
             <AccountSidebar stats={{ listings: 5, sales: 10, purchases: 2 }} ratingAvg={4.5} reviewsCount={12} reviews={[]} />
         </div>
     );
